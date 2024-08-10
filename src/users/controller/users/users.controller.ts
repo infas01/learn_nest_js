@@ -7,6 +7,8 @@ import {
   Query,
   Req,
   Res,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { CreateUserDto } from 'src/users/dtos/CreateUser.dto';
@@ -50,7 +52,10 @@ export class UsersController {
   //     console.log(request.body);
   //     response.send('User Created');
   //   }
+
+
   @Post('create')
+  @UsePipes(new ValidationPipe())
   createUser(@Body() userData: CreateUserDto) {
     console.log(userData);
     return 'User Created';
