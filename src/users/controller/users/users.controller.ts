@@ -1,8 +1,11 @@
+/* eslint-disable prettier/prettier */
 import {
   Body,
   Controller,
   Get,
   Param,
+  ParseBoolPipe,
+  ParseIntPipe,
   Post,
   Query,
   Req,
@@ -53,9 +56,8 @@ export class UsersController {
   //     response.send('User Created');
   //   }
 
-
   @Post('create')
-  @UsePipes(new ValidationPipe())
+  @UsePipes(new ValidationPipe()) //In user.dto we used IsNotEmpty and IsEmail to validate our username and email.
   createUser(@Body() userData: CreateUserDto) {
     console.log(userData);
     return 'User Created';
@@ -67,15 +69,19 @@ export class UsersController {
   //     response.send('user with ID');
   //   }
 
-  //   @Get(':id/:postId')
-  //   getUserById(@Param('id') id: string, @Param('postId') postId: string) {
-  //     console.log(id, postId);
-  //     return { id, postId };
-  //   }
+  //ParseIntPipe used to validate the id as number. If id not a number, it gives error.
+  @Get(':id/:postId')
+  getUserById(
+    @Param('id', ParseIntPipe) id: number,
+    @Param('postId') postId: string,
+  ) {
+    console.log(id, postId);
+    return { id, postId };
+  }
 
   @Get('query')
-  getUsersByUsingFilter(@Query('sortBy') sortBy: string) {
-    console.log(sortBy);
+  getUsersByUsingFilter(@Query('sortDesc', ParseBoolPipe) sortDesc: string) {
+    console.log(sortDesc);
     return [
       {
         username: 'Safni',
